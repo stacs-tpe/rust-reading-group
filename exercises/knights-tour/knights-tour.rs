@@ -6,6 +6,11 @@ const KNIGHT_MOVES: [(i8, i8); 8] = [
 
 // Main entry point, no arguments
 fn main() {
+    // Welcome message
+    println!("MY_KNIGHT");
+    println!("A blazingly fast Knight's tour program, written in Rust");
+    println!("v1.0");
+    
     // Set up parameters
     let mut visited: Vec<(u8, u8)> = Vec::new();  // All visited squares so far
     visited.push((0, 0));  // Start at the top-left square
