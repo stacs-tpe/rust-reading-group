@@ -18,12 +18,12 @@ fn main() {
     let required = width * width;  // Number of squares required for a full tour
 
     // Print the result from the recursive function
-    match find_path(&mut visited, width, required) {
-        Some(path) => {
-            println!("Found path of length {} on {}×{} board", path.len(), width, width);
-            draw_path(path, width);
+    match complete_path(&mut visited, width, required) {
+        true => {
+            println!("Found path of length {} on {}×{} board", visited.len(), width, width);
+            draw_path(&visited, width);
         },
-        None => println!("No path found")
+        false => println!("No path found")
     }
 }
 
@@ -32,16 +32,20 @@ fn main() {
 // - width: dimention of the board (8)
 // - required: number of squares we need to visit for completion (64)
 // Returns optional list of squares (immutable if present)
-fn find_path(visited: &mut Vec<(u8, u8)>, width: u8, required: u8) -> Option<&Vec<(u8, u8)>> {
+fn complete_path(visited: &mut Vec<(u8, u8)>, width: u8, required: u8) -> bool {
 
     // Check for completion
     if visited.len() >= required.into() {
-        return Some(visited);
+        return true;
     }
 
     // Get the current location
-    let (x, y): &(u8, u8) = visited.last()
-        .expect("visited should never be empty");
+    let (x, y): &(u8, u8) = &visited.last()
+        .expect("visited should never be empty")
+        .clone();
+
+    //let x = p.0.clone();
+    //let y = p.1.clone();
 
     // Check all 8 directions
     for (dx, dy) in KNIGHT_MOVES {
@@ -66,9 +70,9 @@ fn find_path(visited: &mut Vec<(u8, u8)>, width: u8, required: u8) -> Option<&Ve
         visited.push((newx, newy));
 
         // Recursive call using the longer list
-        return match find_path(visited, width, required) {
-            Some(path) => Some(path),
-            None => {
+        match complete_path(visited, width, required) {
+            true => return true,
+            false => {
                 visited.pop();  // Failure, so remove that last square
                 continue
             }
@@ -76,7 +80,7 @@ fn find_path(visited: &mut Vec<(u8, u8)>, width: u8, required: u8) -> Option<&Ve
     }
 
     // If no solution was found, then no solution exists for this list
-    None
+    false
 }
 
 // Draw the (partial) tour, as a grid with numbered squares
