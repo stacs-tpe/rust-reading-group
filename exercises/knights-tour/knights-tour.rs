@@ -18,7 +18,7 @@ fn main() {
     let required = width * width;  // Number of squares required for a full tour
 
     // Print the result from the recursive function
-    match find_path(visited, width, required) {
+    match find_path(&mut visited, width, required) {
         Some(path) => {
             println!("Found path of length {} on {}×{} board", path.len(), width, width);
             draw_path(path, width);
@@ -31,7 +31,8 @@ fn main() {
 // - visited: squares we've already visited
 // - width: dimention of the board (8)
 // - required: number of squares we need to visit for completion (64)
-fn find_path(visited: Vec<(u8, u8)>, width: u8, required: u8) -> Option<Vec<(u8, u8)>> {
+// Returns optional list of squares (immutable if present)
+fn find_path(visited: &mut Vec<(u8, u8)>, width: u8, required: u8) -> Option<&Vec<(u8, u8)>> {
 
     // Check for completion
     if visited.len() >= required.into() {
@@ -61,24 +62,25 @@ fn find_path(visited: Vec<(u8, u8)>, width: u8, required: u8) -> Option<Vec<(u8,
         }
 
         // If we get here it's a legal next move!
-        // Copy the visited list and add the new square to it
-        // TODO: Modify the list instead of copying
-        let mut new_visited = visited.to_vec();
-        new_visited.push((newx, newy));
+        // Add this square to the list
+        visited.push((newx, newy));
 
-        // Recursive call using the new longer list
-        return match find_path(new_visited, width, required) {
+        // Recursive call using the longer list
+        return match find_path(visited, width, required) {
             Some(path) => Some(path),
-            None => continue
+            None => {
+                visited.pop();  // Failure, so remove that last square
+                continue
+            }
         };
     }
 
-    // If no solution was found, then none exists for this
-    return None;
+    // If no solution was found, then no solution exists for this list
+    None
 }
 
 // Draw the (partial) tour, as a grid with numbered squares
-fn draw_path(visited: Vec<(u8, u8)>, width: u8) {
+fn draw_path(visited: &Vec<(u8, u8)>, width: u8) {
     for x in 0..width {
         for y in 0..width {
             match visited.iter().position(|a| a == &(x, y)) {
