@@ -9,7 +9,8 @@ fn main() {
     // Welcome message
     println!("MY_KNIGHT");
     println!("A blazingly fast Knight's tour program, written in Rust");
-    println!("v1.0");
+    println!("v2.0");
+    println!("(Now with blazingly fast Vec references)");
     
     // Set up parameters
     let mut visited: Vec<(u8, u8)> = Vec::new();  // All visited squares so far
@@ -42,10 +43,7 @@ fn complete_path(visited: &mut Vec<(u8, u8)>, width: u8, required: u8) -> bool {
     // Get the current location
     let (x, y): &(u8, u8) = &visited.last()
         .expect("visited should never be empty")
-        .clone();
-
-    //let x = p.0.clone();
-    //let y = p.1.clone();
+        .clone();  // We have to copy this because it's a reference to 'visited'!
 
     // Check all 8 directions
     for (dx, dy) in KNIGHT_MOVES {
@@ -70,13 +68,12 @@ fn complete_path(visited: &mut Vec<(u8, u8)>, width: u8, required: u8) -> bool {
         visited.push((newx, newy));
 
         // Recursive call using the longer list
-        match complete_path(visited, width, required) {
-            true => return true,
-            false => {
-                visited.pop();  // Failure, so remove that last square
-                continue
-            }
-        };
+        if complete_path(visited, width, required) {
+            return true;
+        } else {
+            visited.pop();  // Failure, so remove that last square
+            continue
+        }
     }
 
     // If no solution was found, then no solution exists for this list
