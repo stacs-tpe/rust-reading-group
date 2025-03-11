@@ -1,0 +1,22 @@
+Date: 2025-03-10
+Time: 11:00–12:00
+Location: Jack Cole 0.21
+
+Attendees:
+Jake Anderson
+Joan Espasa Arxer
+Julia Dreiling
+David Morrison
+Michael Young
+
+Apologies:
+Naveen Vatti
+
+Everyone arrived in a timely manner
+Julia presented Chp 3-4
+Michael presented a knight's tour solution in Rust
+We specifically discussed:
+  - Ownership and borrowing
+  - Collection types
+  - A bug in the book: you should own values, not variables
+Next week we'll cover Chp 5-6
