@@ -16,37 +16,43 @@ fn main() {
             return;
         }
     };
-    
-    println!("Welcome to MY_PRIMES, v1.0");
+
+    // Obnoxious banner
+    println!("Welcome to MY_PRIMES, v1.1");
     println!("A blazingly fast Sieve of Eratosthenes, written in Rust");
 
+    // Find and print the primes
     println!("Primes up to {n}:");
-
-    let primes = primes_up_to(n);
-    for p in primes {
+    for p in primes_up_to(n) {
         print!("{p} ");
     }
-    println!();
+    println!();  // Clear line before returning prompt
 }
 
-fn primes_up_to(max: u32) -> Vec<u32> {
-    let max = max as usize;
-    let mut is_prime = vec![true; max];  // whether i is prime
-    let mut primes: Vec<u32> = Vec::new();
+fn primes_up_to(max: usize) -> Vec<usize> {
+    // whether i is prime or not
+    // TODO: shrink this with a bitmask, since 'bool' uses 8 bits
+    let mut is_prime = vec![true; max];
+
+    // List of primes to be returned
+    let mut primes: Vec<usize> = Vec::new();
 
     // Go through all possible primes
     for p in 2..max {
-        // If not prime, skip
+        // Skip known primes
         if !is_prime[p] {
             continue;
         }
-        // This is prime!
-        primes.push(p as u32);
+
+        // If p was not marked as non-prime in a previous iteration, then it is
+        // not a multiple of any lower prime, so must itself be prime.
+        primes.push(p);
+
         // Mark all its multiples as non-prime
         for k in 2..=(max-1)/p {
             is_prime[p * k] = false;
         }
     }
-    
+
     primes
 }
