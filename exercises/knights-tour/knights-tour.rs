@@ -3,75 +3,71 @@ const KNIGHT_MOVES: [(i8, i8); 8] = [
     (-2, -1), (-2, 1), (-1, -2), (-1, 2),
     (1, -2), (1, 2), (2, -1), (2, 1)
 ];
+const WIDTH: u8 = 8;
+const REQUIRED: usize = (WIDTH * WIDTH) as usize;  // Number of squares required for a full tour
 
 // Main entry point, no arguments
 fn main() {
     // Welcome message
-    println!("MY_KNIGHT");
+    println!("MY_KNIGHT, v3.0");
     println!("A blazingly fast Knight's tour program, written in Rust");
-    println!("v2.0");
-    println!("(Now with blazingly fast Vec references)");
+    println!("(Now with a blazingly fast stack array)");
     
-    // Set up parameters
-    let mut visited: Vec<(u8, u8)> = Vec::new();  // All visited squares so far
-    visited.push((0, 0));  // Start at the top-left square
-    let width = 8;
-    let required = width * width;  // Number of squares required for a full tour
+    // (visited, path_length) represents the path explored so far. 'visited' has
+    // enough space for a full path, but only the range [0..path_length]
+    // represents actual data. This is so that 'visited' doesn't have to grow
+    // and shrink.
+    let mut visited: [(u8, u8); REQUIRED] = [(0, 0); REQUIRED];
+    let mut path_length: usize = 1;  // start at top-left square
 
     // Print the result from the recursive function
-    match complete_path(&mut visited, width, required) {
+    match complete_path(&mut visited, &mut path_length) {
         true => {
-            println!("Found path of length {} on {}×{} board", visited.len(), width, width);
-            draw_path(&visited, width);
+            println!("Found path of length {} on {}×{} board", path_length, WIDTH, WIDTH);
+            draw_path(&visited);
         },
         false => println!("No path found")
     }
 }
 
 // Attempts to complete a partial knight's tour
-// - visited: squares we've already visited
-// - width: dimention of the board (8)
-// - required: number of squares we need to visit for completion (64)
-// Returns optional list of squares (immutable if present)
-fn complete_path(visited: &mut Vec<(u8, u8)>, width: u8, required: u8) -> bool {
-
+fn complete_path(visited: &mut [(u8, u8); REQUIRED], path_length: &mut usize) -> bool {
     // Check for completion
-    if visited.len() >= required.into() {
+    if *path_length >= REQUIRED {
         return true;
     }
 
     // Get the current location
-    let (x, y): &(u8, u8) = &visited.last()
-        .expect("visited should never be empty")
-        .clone();  // We have to copy this because it's a reference to 'visited'!
+    let (x, y): &(u8, u8) = &visited[*path_length - 1].clone();
 
     // Check all 8 directions
     for (dx, dy) in KNIGHT_MOVES {
         // Get the (x, y) coordinate of a move in this direction
         // Skip this one if it's off the edge of the board
         let newx = match x.checked_add_signed(dx) {
-            Some(newx) => if newx < width {newx} else {continue},
+            Some(newx) => if newx < WIDTH {newx} else {continue},
             None => continue
         };
         let newy = match y.checked_add_signed(dy) {
-            Some(newy) => if newy < width {newy} else {continue},
+            Some(newy) => if newy < WIDTH {newy} else {continue},
             None => continue
         };
 
         // Skip this one if it's already been visited
-        if visited.contains(&(newx, newy)) {
+        if (visited[0..*path_length]).contains(&(newx, newy)) {
             continue;
         }
 
         // If we get here it's a legal next move!
         // Add this square to the list
-        visited.push((newx, newy));
+        visited[*path_length] = (newx, newy);
+        *path_length += 1;
 
         // Recursive call using the longer list
-        if complete_path(visited, width, required) {
+        if complete_path(visited, path_length) {
             return true;
         } else {
-            visited.pop();  // Failure, so remove that last square
+            *path_length -= 1;  // Failure, so remove that last square
             continue
         }
     }
@@ -81,9 +77,9 @@ fn complete_path(visited: &mut Vec<(u8, u8)>, width: u8, required: u8) -> bool {
 }
 
 // Draw the (partial) tour, as a grid with numbered squares
-fn draw_path(visited: &Vec<(u8, u8)>, width: u8) {
-    for x in 0..width {
-        for y in 0..width {
+fn draw_path(visited: &[(u8, u8); REQUIRED]) {
+    for x in 0..WIDTH {
+        for y in 0..WIDTH {
             match visited.iter().position(|a| a == &(x, y)) {
                 Some(i) => print!("{:>3}", i),
                 None => print!("  .")
