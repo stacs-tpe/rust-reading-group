@@ -1,0 +1,20 @@
+[book]
+authors = ["Jake Anderson"]
+multilingual = false
+src = "src"
+title = "Week 3 slides"
+
+[output.html]
+theme = "src/theme"
+additional-css = ["src/media/style.css"]
+preferred-dark-theme = "ayu"    # Choose a theme
+
+[output.html.search]
+enable = false
+
+[output.html.playground]
+editable = true
+
+[build]
+create-missing = true
+build-dir = "docs"
