@@ -1,0 +1,22 @@
+Date: 2025-03-24
+Time: 11:00–12:00
+Location: Jack Cole 0.21
+
+Attendees:
+Jake Anderson
+Joan Espasa Arxer
+Julia Dreiling
+David Morrison
+Naveen Vatti
+Michael Young
+
+Apologies:
+None
+
+Everyone arrived within a few minutes
+Jake presented Chp 5-6
+We specifically discussed:
+  - Struct-tuples vs structs
+  - Borrowing/cloning in structs
+  - Options and pattern matching
+Next week we'll cover Chp 7-8, with Naveen leading
