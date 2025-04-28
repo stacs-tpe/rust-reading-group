@@ -1,0 +1,20 @@
+[book]
+authors = ["David Morrison"]
+multilingual = false
+src = "src"
+title = "Week 9 slides"
+
+[output.html]
+theme = "src/theme"
+additional-css = ["src/theme/style.css"]
+preferred-dark-theme = "ayu"             # Choose a theme
+
+[output.html.search]
+enable = false
+
+[output.html.playground]
+editable = true
+
+[build]
+create-missing = true
+build-dir = "docs"
