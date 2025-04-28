@@ -1,0 +1,26 @@
+Date: 2025-04-28
+Time: 11:00–12:00
+Location: Jack Cole 0.21
+
+Attendees:
+Jake Anderson
+Julia Dreiling
+David Morrison
+Naveen Vatti
+Michael Young
+
+Apologies:
+None
+
+David presented Chp 9: Error Handling
+
+We focused carefully on:
+- The meaning and reason for stack unwinding on panic
+- The difference between Result and Option
+- Meaning of the ? operator
+
+Plan for the next few meetings:
+  5th May, Michael, Chp 10
+  26th May, Julia, Chp 11
+  2nd June, Jake, Chp 12
+  9th June, Naveen, Chp 13
