@@ -1,0 +1,30 @@
+Date: 2025-05-26
+Time: 11:00–12:00
+Location: Jack Cole 0.21
+
+Attendees:
+Jake Anderson
+Joan Espasa Arxer
+Julia Dreiling
+David Morrison
+Naveen Vatti
+Michael Young
+
+Apologies:
+None
+
+Michael presented Ch10: Generic Types, Traits, and Lifetimes
+
+Generics were covered quickly.
+Traits were compared to Java's interfaces, and the few differences were discussed.
+The main discussion was on lifetimes:
+- This is a hint to the borrow checker, adding restrictions to make the job easier
+- Many lifetimes are handled automatically.
+
+This was the final meeting of the reading group:
+- Main language features have now been covered
+- Rust isn't the immediate focus for the programmable spaces group this summer
+- Other features are better covered individually when encountered in practice
+- We'll keep the Teams chat open for future conversations
+
+A self-congratulatory round of applause was given
